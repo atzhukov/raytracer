@@ -32,6 +32,11 @@ impl Image {
 	pub fn width(&self) -> usize {
 		self.width
 	}
+	/// Returns the underlying pixels of this image - as a vector.
+	/// The returned vector is flat (1D).
+	pub fn pixels(&self) -> &Vec<Color> {
+		&self.pixels
+	}
 	/// Checks if the specified index is valid for this image.
 	/// Panics if either the row or column index is out of bounds.
 	#[cfg(debug_assertions)]
