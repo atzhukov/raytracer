@@ -23,5 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: install target
+        run: rustup target add wasm32-unknown-unknown
       - name: build
         run: cargo build --target wasm32-unknown-unknown --verbose --future-incompat-report
