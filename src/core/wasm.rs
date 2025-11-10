@@ -6,6 +6,8 @@ use crate::input::RaytracerInput;
 use crate::scene::Scene;
 use crate::types::ToVec3;
 
+const PREFIX: &str = "raytracer-rust";
+
 #[wasm_bindgen]
 extern "C" {
 	#[wasm_bindgen(js_namespace = console, js_name = log)]
@@ -18,19 +20,26 @@ macro_rules! console_log {
 	};
 }
 
-#[wasm_bindgen]
-pub fn render(input: JsValue) -> Vec<u8> {
-	let Ok(input) = RaytracerInput::try_from(input) else {
-		return vec![];
+macro_rules! error {
+	($($t:tt)*) => {
+		{
+			let message = format!($($t)*);
+			format!("{PREFIX}: {message}")
+		}
 	};
+}
+
+#[wasm_bindgen]
+pub fn render(input: JsValue, width: usize, height: usize) -> Result<Vec<u8>, String> {
+	let input = RaytracerInput::try_from(input).map_err(|e| error!("invalid input: {e}"))?;
 
 	let default_focus_distance =
 		(input.camera.source.to_vec3() - input.camera.target.to_vec3()).norm();
 	let setup = CameraSetup {
-		width: 600,
-		height: 300,
-		v_fov: 27.0,        //input.camera.fov,
-		defocus_angle: 0.0, // input.camera.aperture,
+		width,
+		height,
+		v_fov: input.camera.fov,
+		defocus_angle: input.camera.aperture,
 		focus_distance: default_focus_distance,
 		lookfrom: input.camera.source,
 		lookat: input.camera.target,
@@ -45,9 +54,8 @@ pub fn render(input: JsValue) -> Vec<u8> {
 	console_log!("raytracer: rendering finished.");
 
 	let mut buf = Vec::with_capacity(4 * image.width() * image.height());
-	let Ok(()) = output::px::rgba(&image, 2.2, &mut buf) else {
-		return vec![];
-	};
+	output::px::rgba(&image, 2.2, &mut buf)
+		.map_err(|e| error!("could not write image pixels: {e}"))?;
 
-	buf
+	Ok(buf)
 }
