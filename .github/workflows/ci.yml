@@ -4,7 +4,7 @@ on:
   push:
     branches: ['**']
   pull_request:
-    branches: ['main']
+    branches: ['**']
 
 env:
   CARGO_TERM_COLOR: always
@@ -18,3 +18,12 @@ jobs:
         run: cargo build --verbose --future-incompat-report
       - name: test
         run: cargo test --verbose --no-fail-fast --future-incompat-report
+
+  build-wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install target
+        run: rustup target add wasm32-unknown-unknown
+      - name: build
+        run: cargo build --target wasm32-unknown-unknown --verbose --future-incompat-report

@@ -9,20 +9,20 @@ Guidance: https://raytracing.github.io
 ## Usage
 
 ```sh
-raytracer <INPUT> --width=<WIDTH> --height=<HEIGHT> [OPTIONS]
+raytracer-cli <INPUT> --width=<WIDTH> --height=<HEIGHT> [OPTIONS]
 ```
 
 You can control output, camera and rendering parameters with other options.
 For example, the following command will produce a demo image of width 800 px, height 450 px, camera at `(0, 0, 1)` and a vertical field of view of 90 degrees:
 
 ```sh
-raytracer ./inputs/github.json -w=800 -h=450 -c=0,0,1 --fov=90
+raytracer-cli ./inputs/github.json -w=800 -h=450 -c=0,0,1 --fov=90
 ```
 
 For a list of all available options, see the help message with:
 
 ```sh
-raytracer -H   # or --help
+raytracer-cli -H   # or --help
 ```
 
 ## Build & Run
@@ -58,6 +58,21 @@ Otherwise, you can compile the binary with:
 ```sh
 cargo build --release
 ```
+
+### WebAssembly
+
+To compile for `wasm32-unknown-unknown`, install `wasm-pack`:
+
+```sh
+cargo install wasm-pack
+```
+
+Then, run the following (`--no-opt` is required at the moment):
+
+```sh
+wasm-pack build --target web --no-opt
+```
+
 
 ## References
 

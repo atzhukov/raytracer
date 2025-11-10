@@ -27,6 +27,13 @@ impl TryFrom<fs::File> for RaytracerInput {
 		serde_json::from_reader(reader).map_err(|e| e.to_string())
 	}
 }
+#[cfg(target_arch = "wasm32")]
+impl TryFrom<wasm_bindgen::JsValue> for RaytracerInput {
+	type Error = String;
+	fn try_from(value: wasm_bindgen::JsValue) -> Result<Self, Self::Error> {
+		serde_wasm_bindgen::from_value::<Self>(value).map_err(|e| e.to_string())
+	}
+}
 
 #[derive(Debug, PartialEq, Deserialize)]
 #[serde(rename_all = "camelCase")]
