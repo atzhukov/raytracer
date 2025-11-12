@@ -50,11 +50,8 @@ impl Ray {
 		}
 		// find intersection with an object
 		let Some(hit) = scene.hit(self, Interval::from(0.001)) else {
-			// background
-			let a = 0.5 * (self.direction.unit().y() + 1.0);
-			let white = Color::new(1.0, 1.0, 1.0).to_vec3().scale(1.0 - a);
-			let blue = Color::new(0.5, 0.7, 1.0).to_vec3().scale(a);
-			return (white + blue).into();
+			// white background
+			return Color::new(1.0, 1.0, 1.0);
 		};
 		// determine color recursively
 		if let Some(scattered_ray) = hit.material.scatter(self, hit) {

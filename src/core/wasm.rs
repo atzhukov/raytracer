@@ -33,14 +33,12 @@ macro_rules! error {
 pub fn render(input: JsValue, width: usize, height: usize) -> Result<Vec<u8>, String> {
 	let input = RaytracerInput::try_from(input).map_err(|e| error!("invalid input: {e}"))?;
 
-	let default_focus_distance =
-		(input.camera.source.to_vec3() - input.camera.target.to_vec3()).norm();
 	let setup = CameraSetup {
 		width,
 		height,
 		v_fov: input.camera.fov,
 		defocus_angle: input.camera.aperture,
-		focus_distance: default_focus_distance,
+		focus_distance: input.camera.focus_distance,
 		lookfrom: input.camera.source,
 		lookat: input.camera.target,
 		..Default::default()
