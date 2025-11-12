@@ -4,7 +4,6 @@ use crate::camera::{Camera, CameraSetup};
 use crate::core::output;
 use crate::input::RaytracerInput;
 use crate::scene::Scene;
-use crate::types::ToVec3;
 
 const PREFIX: &str = "raytracer-rust";
 
