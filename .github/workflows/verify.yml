@@ -1,10 +1,11 @@
-name: Build
+name: Verify
 
 on:
-  push:
-    branches: ['**']
-  pull_request:
-    branches: ['**']
+  workflow_call:
+    inputs:
+      ref:
+        required: false
+        type: string
 
 env:
   CARGO_TERM_COLOR: always
@@ -14,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - name: build
         run: cargo build --verbose --future-incompat-report
       - name: test
@@ -23,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - name: install target
         run: rustup target add wasm32-unknown-unknown
       - name: build
