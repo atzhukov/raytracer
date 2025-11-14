@@ -2,32 +2,23 @@ name: Verify
 
 on:
   workflow_call:
-    inputs:
-      ref:
-        required: false
-        type: string
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
+  build-native:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
+      - uses: actions/checkout@v5
       - name: build
         run: cargo build --verbose --future-incompat-report
       - name: test
         run: cargo test --verbose --no-fail-fast --future-incompat-report
-
   build-wasm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.ref }}
+      - uses: actions/checkout@v5
       - name: install target
         run: rustup target add wasm32-unknown-unknown
       - name: build
