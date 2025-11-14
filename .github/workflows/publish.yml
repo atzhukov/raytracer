@@ -28,8 +28,9 @@ jobs:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
           scope: '@atzhukov'
+      - name: Update npm
+        run: npm install -g npm@latest
       - name: Publish to npm
         run: |
           cd pkg
-          npm login
           npm publish --provenance --access=public
