@@ -21,13 +21,14 @@ jobs:
       - name: Install wasm-pack
         run: cargo install wasm-pack
       - name: Package
-        run: |
-          wasm-pack build --target=web --scope=${{ github.repository_owner }}
-          cd pkg
+        run: wasm-pack build --target=web --scope=atzhukov
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
+          scope: '@atzhukov'
       - name: Publish to npm
-        run: npm publish --provenance --access=public
+        run: |
+          cd pkg
+          npm publish --provenance --access=public
