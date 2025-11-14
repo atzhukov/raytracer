@@ -27,7 +27,6 @@ jobs:
         with:
           node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
-          scope: '@atzhukov'
       - name: Publish to npm
         run: |
           cd pkg
