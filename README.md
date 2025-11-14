@@ -67,12 +67,11 @@ To compile for `wasm32-unknown-unknown`, install `wasm-pack`:
 cargo install wasm-pack
 ```
 
-Then, run the following (`--no-opt` is required at the moment):
+Then, run the following:
 
 ```sh
-wasm-pack build --target web --no-opt
+wasm-pack build --target=web
 ```
-
 
 ## References
 
